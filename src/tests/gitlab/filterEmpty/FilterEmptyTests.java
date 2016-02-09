@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import cse332.exceptions.NotYetImplementedException;
 import filterEmpty.FilterEmpty;
-import tests.exceptions.ExitException;
 import tests.exceptions.InformativeException;
 import tests.TestsUtility;
 
