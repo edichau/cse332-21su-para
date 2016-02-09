@@ -6,7 +6,6 @@ import java.util.Random;
 
 import cse332.exceptions.NotYetImplementedException;
 import getLeftMostIndex.GetLeftMostIndex;
-import tests.exceptions.ExitException;
 import tests.exceptions.InformativeException;
 import tests.TestsUtility;
 
