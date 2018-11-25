@@ -34,6 +34,8 @@ public class GetLeftMostIndexTests extends TestsUtility {
     protected void run() {
         END_WITH_EXIT = true;
         SHOW_TESTS = true;
+        PRINT_STDERR = true;
+        PRINT_TESTERR = true;
 
         ALLOWED_TIME = 25000;
 
