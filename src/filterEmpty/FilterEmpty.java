@@ -22,7 +22,7 @@ public class FilterEmpty {
         throw new NotYetImplementedException();
     }
 
-    
+
     public static int[] mapToOutput(String[] input, int[] bitsum) {
         throw new NotYetImplementedException();
     }

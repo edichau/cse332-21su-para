@@ -23,7 +23,7 @@ public class LongestSequence {
         int[] arr = null;
 
         try {
-            val = Integer.parseInt(args[0]); 
+            val = Integer.parseInt(args[0]);
             String[] stringArr = args[1].replaceAll("\\s*",  "").split(",");
             arr = new int[stringArr.length];
             for (int i = 0; i < stringArr.length; i++) {

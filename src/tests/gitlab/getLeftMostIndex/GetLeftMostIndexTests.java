@@ -1,15 +1,11 @@
 package tests.gitlab.getLeftMostIndex;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.Random;
 
-import cse332.exceptions.NotYetImplementedException;
 import getLeftMostIndex.GetLeftMostIndex;
-import tests.exceptions.InformativeException;
-import tests.TestsUtility;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class GetLeftMostIndexTests extends TestsUtility {
+public class GetLeftMostIndexTests {
     public static Random RANDOM = new Random(332134);
 
     public static final int FULLY_SEQUENTIAL = Integer.MAX_VALUE;
@@ -24,79 +20,30 @@ public class GetLeftMostIndexTests extends TestsUtility {
     public static final int LARGE_NEEDLE_SIZE = 10;
     public static final int LARGE_HAYSTACK_SIZE  = 100000;
 
-    public static final int HUGE_NEEDLE_SIZE = 50;
-    public static final int HUGE_HAYSTACK_SIZE   = 80000000;
-
-    public static void main(String[] args) {
-        new GetLeftMostIndexTests().run();
-    }
-
-    protected void run() {
-        END_WITH_EXIT = true;
-        SHOW_TESTS = true;
-        PRINT_STDERR = true;
-        PRINT_TESTERR = true;
-
-        ALLOWED_TIME = 25000;
-
-        test("checkSmallSequential");
-        test("checkSmallParallel");
-        test("checkLarge");
-        finish();
-    }
-
-    public static int checkSmallSequential() { 
-        boolean good = true;
+    @Test(timeout = 25000)
+    public void checkSmallSequential() {
         for (int i = 0; i < NUM_SMALL_HAYSTACKS; i++) {
             for (int j = 1; j <= NUM_SMALL_NEEDLE_SIZES; j++) {
-                good &= test(makeInput(i, SMALL_HAYSTACK_SIZE), FULLY_SEQUENTIAL, j);
+                test(makeInput(i, SMALL_HAYSTACK_SIZE), FULLY_SEQUENTIAL, j);
             }
         }
-        return good ? 1 : 0;
     }
 
-    public static int checkSmallParallel() { 
-        boolean good = true;
+    @Test(timeout = 25000)
+    public void checkSmallParallel() {
         for (int i = 0; i < NUM_SMALL_HAYSTACKS; i++) {
             for (int j = 1; j <= NUM_SMALL_NEEDLE_SIZES; j++) {
-                good &= test(makeInput(i, SMALL_HAYSTACK_SIZE), FULLY_PARALLEL, j);
+                test(makeInput(i, SMALL_HAYSTACK_SIZE), FULLY_PARALLEL, j);
             }
         }
-        return good ? 1 : 0;
     }
 
-
-    public static int checkLarge() {
-        boolean good = true;
+    @Test(timeout = 25000)
+    public void checkLarge() {
         for (int i = 0; i < NUM_LARGE_HAYSTACKS; i++) {
-            good &= test(makeRandomInput(LARGE_HAYSTACK_SIZE), REASONABLE_CUTOFF, LARGE_NEEDLE_SIZE);
+            test(makeRandomInput(LARGE_HAYSTACK_SIZE), REASONABLE_CUTOFF, LARGE_NEEDLE_SIZE);
         }
-        return good ? 1 : 0;
     }
-
-    public static int checkParallelism() {
-        String haystack = makeRandomInput(HUGE_HAYSTACK_SIZE);
-        String needle = makeRandomInput(HUGE_NEEDLE_SIZE);
-        int answer = sweep(needle, haystack);
-
-        long seqTime, reasonableTime, paraTime = 0; 
-        long start = System.currentTimeMillis(); 
-
-        boolean fullySequential = runTest(needle, haystack, FULLY_SEQUENTIAL, answer) == 1;
-        seqTime = System.currentTimeMillis() - start;
-
-        boolean reasonableCutoff = runTest(needle, haystack, REASONABLE_CUTOFF, answer) == 1;
-        reasonableTime = System.currentTimeMillis() - (seqTime + start);
-
-        boolean fullyParallel = runTest(needle, haystack, FULLY_PARALLEL, answer) == 1;
-        paraTime = System.currentTimeMillis() - (seqTime + reasonableTime + start);
-
-        if (!fullySequential || !reasonableCutoff || !fullyParallel) {
-            return 0;
-        }
-
-        return (paraTime > seqTime && seqTime > reasonableTime) ? 1 : 0;
-    } 
 
     private static int sweep(String needle, String haystack) {
         int currStart = 0;
@@ -122,7 +69,7 @@ public class GetLeftMostIndexTests extends TestsUtility {
         return -1;
     }
 
-    private static String makeInput(int num, int size) {
+    private String makeInput(int num, int size) {
         StringBuilder arr = new StringBuilder();
         for (int i = size - 1; i >= 0; i--) {
             arr.append("" + (char)('0' + (char)((num >> i) & 1)));
@@ -130,7 +77,7 @@ public class GetLeftMostIndexTests extends TestsUtility {
         return arr.toString();
     }
 
-    private static String makeRandomInput(int size) {
+    private String makeRandomInput(int size) {
         StringBuilder arr = new StringBuilder();
         for (int i = size - 1; i >= 0; i--) {
             arr.append("" + (char)('0' + (RANDOM.nextBoolean() ? 1 : 0)));
@@ -139,17 +86,12 @@ public class GetLeftMostIndexTests extends TestsUtility {
     }
 
 
-    private static boolean test(String haystack, int cutoff, int needleSize) {
-        boolean correct = true;
-
+    private void test(String haystack, int cutoff, int needleSize) {
         for (int i = 0; i < (1 << needleSize); i++) { 
             String needle = makeInput(i, needleSize);
-            correct &= runTest(needle, haystack, cutoff, sweep(needle, haystack)) == 1;
+            int actual = GetLeftMostIndex.getLeftMostIndex(needle.toCharArray(), haystack.toCharArray(), cutoff);
+            int expected = sweep(needle, haystack);
+            assertEquals(expected, actual);
         }
-        return correct;
-    }
-        
-    private static int runTest(String needle, String haystack, int cutoff, int expected) {
-        return GetLeftMostIndex.getLeftMostIndex(needle.toCharArray(), haystack.toCharArray(), cutoff) == expected ? 1 :0;
     }
 }
