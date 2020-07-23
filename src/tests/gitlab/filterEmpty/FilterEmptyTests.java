@@ -76,7 +76,12 @@ public class FilterEmptyTests {
     }
 
     private void runTest(String[] input, int[] expected) {
-        int[] result = FilterEmpty.filterEmpty(input);
+        String inputString = Arrays.toString(input);
+        if (inputString.length() > 0) {
+            inputString = inputString.substring(1, inputString.length() - 1);
+        }
+        String[] arr = inputString.replaceAll("\\s*", "").split(",");
+        int[] result = FilterEmpty.filterEmpty(arr);
         assertNotNull(result);
         assertEquals(Arrays.toString(expected), Arrays.toString(result));
     }
