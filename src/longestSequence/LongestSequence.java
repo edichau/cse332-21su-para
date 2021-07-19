@@ -5,6 +5,17 @@ import java.util.concurrent.RecursiveTask;
 import cse332.exceptions.NotYetImplementedException;
 
 public class LongestSequence {
+    /**
+     * Use the ForkJoin framework to write the following method in Java.
+     *
+     * Returns the length of the longest consecutive sequence of val in arr.
+     * For example, if arr is [2, 17, 17, 8, 17, 17, 17, 0, 17, 1], then
+     * getLongestSequence(17, arr) == 3 and getLongestSequence(35, arr) == 0.
+     *
+     * Your code must have O(n) work, O(lg n) span, where n is the length of arr, and actually use the sequentialCutoff
+     * argument. We have provided you with an extra class SequenceRange. We recommend you use this class as
+     * your return value, but this is not required.
+     */
     public static int getLongestSequence(int val, int[] arr, int sequentialCutoff) {
         throw new NotYetImplementedException();
     }
